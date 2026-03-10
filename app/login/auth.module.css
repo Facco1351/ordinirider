@@ -1,0 +1,30 @@
+.wrap {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: calc(env(safe-area-inset-top,1.5rem) + 1rem) 1.25rem 2.5rem;
+}
+.logo {
+  display: flex; align-items: center; gap: .6rem;
+  justify-content: center; margin-bottom: 1.75rem;
+}
+.logoIcon {
+  width: 40px; height: 40px; background: var(--acc); border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; box-shadow: var(--red-glow); flex-shrink: 0;
+}
+.logoText {
+  font-family: var(--fh); font-weight: 800; font-size: 1.3rem; letter-spacing: -.03em;
+}
+.title {
+  font-family: var(--fh); font-size: 1.55rem; text-align: center; margin-bottom: .25rem;
+}
+.sub {
+  font-size: .88rem; color: var(--t2); text-align: center; margin-bottom: 1.75rem;
+}
+.foot {
+  text-align: center; font-size: .85rem; color: var(--t2); margin-top: 1.4rem;
+}
+.foot a { color: var(--acc); text-decoration: none; }
+.foot a:hover { color: var(--acc2); }
