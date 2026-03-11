@@ -3,7 +3,12 @@ import './globals.css'
 export const metadata = {
   title: 'RiderDash',
   description: 'Traccia le tue consegne, guadagni e statistiche',
-  viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
   themeColor: '#08080b',
 }
 
