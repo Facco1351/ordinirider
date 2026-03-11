@@ -13,12 +13,12 @@ export default function GiornateIndexPage() {
   const [mese, setMese] = useState(now.getMonth() + 1)
 
   return (
-    <div style={{position:'relative',zIndex:1}}>
+    <div className="page-wrap">
       <div className="page-header">
         <Link href="/dashboard" className="btn-icon">←</Link>
         <h2>Visualizza Giornate</h2>
       </div>
-      <div className="page-content" style={{maxWidth:480}}>
+      <div className="page-content page-inner" style={{maxWidth:480}}>
         <div className="field">
           <label>Anno</label>
           <select className="inp" value={anno} onChange={e=>setAnno(Number(e.target.value))}>

@@ -13,18 +13,17 @@ export default function InserisciGiornata() {
     numero_ordini: '', ordini_consegnati: '', incentivi: '',
     mance: '', contanti: '', benzina: '', km: '', luogo: LUOGHI[0],
   })
-  const [error, setError]   = useState('')
+  const [error, setError]     = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
 
-  // Preview live
   const preview = calcolaGiornata({
     ordini_consegnati: form.ordini_consegnati || 0,
-    incentivi: form.incentivi || 0,
-    mance: form.mance || 0,
-    contanti: form.contanti || 0,
+    incentivi:         form.incentivi || 0,
+    mance:             form.mance || 0,
+    contanti:          form.contanti || 0,
   })
 
   async function handleSubmit(e) {
@@ -47,19 +46,19 @@ export default function InserisciGiornata() {
   }
 
   return (
-    <div style={{position:'relative',zIndex:1}}>
+    <div className="page-wrap">
       <div className="page-header">
         <Link href="/dashboard" className="btn-icon">←</Link>
         <h2>Inserisci Giornata</h2>
       </div>
 
       {/* Live preview */}
-      <div style={{padding:'1rem 1.25rem',borderBottom:'1px solid var(--border)',background:'linear-gradient(135deg,rgba(255,69,32,.08) 0%,transparent 70%)'}}>
-        <div style={{display:'flex',gap:'.75rem',flexWrap:'wrap'}}>
+      <div style={{borderBottom:'1px solid var(--border)',background:'linear-gradient(135deg,rgba(255,69,32,.08) 0%,transparent 70%)'}}>
+        <div className="page-inner" style={{padding:'1rem 1.25rem',display:'flex',gap:'.75rem',flexWrap:'wrap'}}>
           {[
-            {label:'Totale',  value:fmt(preview.totale)+' €', color:'var(--acc)'},
-            {label:'Tasse ~', value:fmt(preview.tasse)+' €',  color:'#ff7f5c'},
-            {label:'Bonifico ~', value:fmt(preview.bonifico)+' €', color:'var(--acc2)'},
+            {label:'Totale',     value:`${fmt(preview.totale)} €`,   color:'var(--acc)'},
+            {label:'Tasse ~',    value:`${fmt(preview.tasse)} €`,    color:'#ff7f5c'},
+            {label:'Bonifico ~', value:`${fmt(preview.bonifico)} €`, color:'var(--acc2)'},
           ].map(c=>(
             <div key={c.label} style={{background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:'var(--r)',padding:'.6rem 1rem',minWidth:110,textAlign:'center'}}>
               <div style={{fontSize:'.65rem',textTransform:'uppercase',letterSpacing:'.09em',color:'var(--t2)',marginBottom:'.22rem'}}>{c.label}</div>
@@ -69,7 +68,7 @@ export default function InserisciGiornata() {
         </div>
       </div>
 
-      <div className="page-content" style={{maxWidth:700}}>
+      <div className="page-content page-inner">
         {success && <div className="alert alert-ok">✓ Giornata salvata con successo!</div>}
         {error   && <div className="alert alert-err">{error}</div>}
 
@@ -141,8 +140,8 @@ export default function InserisciGiornata() {
             </div>
           </div>
 
-          <div style={{marginTop:'1.25rem'}}>
-            <button className="btn btn-primary btn-full" style={{maxWidth:320}} type="submit" disabled={loading}>
+          <div style={{marginTop:'1.5rem'}}>
+            <button className="btn btn-primary" style={{minWidth:240}} type="submit" disabled={loading}>
               {loading ? <span className="spinner"/> : 'Aggiungi Giornata →'}
             </button>
           </div>

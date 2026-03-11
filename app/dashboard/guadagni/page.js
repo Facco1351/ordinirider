@@ -31,16 +31,15 @@ export default function GuadagniPage() {
   const totBon = dati.reduce((s,r)=>s+Number(r.bonifico),0)
   const totOrd = dati.reduce((s,r)=>s+Number(r.ordini),0)
   const diff   = totFat - 5000
-
   const meseDetail = selMese ? dati.find(d=>d.mese===selMese) : null
 
   return (
-    <div style={{position:'relative',zIndex:1}}>
+    <div className="page-wrap">
       <div className="page-header">
         <Link href="/dashboard" className="btn-icon">←</Link>
         <h2>I miei guadagni</h2>
       </div>
-      <div className="page-content">
+      <div className="page-content page-inner">
 
         {/* Anno selector */}
         <div className="anno-row">
@@ -49,16 +48,33 @@ export default function GuadagniPage() {
             <button key={a} className={`ap${a===anno?' active':''}`}
               onClick={()=>{setAnno(a);loadAnno(a)}}>{a}</button>
           ))}
-          {!anni.length && <span style={{fontSize:'.85rem',color:'var(--t3)'}}>Nessun dato — crea prima un mese dalle Giornate</span>}
+          {!anni.length && !loading && (
+            <span style={{fontSize:'.85rem',color:'var(--t3)'}}>
+              Nessun dato — crea prima un mese dalla pagina Giornate
+            </span>
+          )}
         </div>
 
-        {/* KPI annuali */}
-        {anno && (
+        {anno && !loading && (
           <>
+            {/* KPI annuali */}
             <div className="kpi-grid kpi-grid-3 anim-up">
-              <div className="kpi"><span className="kpi-icon">💰</span><div className="kpi-label">Fatturato</div><div className="kpi-value c-acc">{fmt(totFat)} €</div><div className="kpi-sub">anno {anno}</div></div>
-              <div className="kpi anim-d1"><span className="kpi-icon">🏦</span><div className="kpi-label">Bonifico</div><div className="kpi-value c-ora">{fmt(totBon)} €</div></div>
-              <div className="kpi anim-d2"><span className="kpi-icon">📦</span><div className="kpi-label">Ordini</div><div className="kpi-value c-grn">{totOrd}</div></div>
+              <div className="kpi">
+                <span className="kpi-icon">💰</span>
+                <div className="kpi-label">Fatturato</div>
+                <div className="kpi-value c-acc">{fmt(totFat)} €</div>
+                <div className="kpi-sub">anno {anno}</div>
+              </div>
+              <div className="kpi anim-d1">
+                <span className="kpi-icon">🏦</span>
+                <div className="kpi-label">Bonifico</div>
+                <div className="kpi-value c-ora">{fmt(totBon)} €</div>
+              </div>
+              <div className="kpi anim-d2">
+                <span className="kpi-icon">📦</span>
+                <div className="kpi-label">Ordini</div>
+                <div className="kpi-value c-grn">{totOrd}</div>
+              </div>
             </div>
 
             {/* Progress verso 5000 */}
@@ -72,7 +88,9 @@ export default function GuadagniPage() {
               </div>
             </div>
             <div style={{fontSize:'.82rem',color:diff>=0?'#2ed573':'#ff7f5c',marginTop:'-.8rem',marginBottom:'1.3rem'}}>
-              {diff>=0 ? `✓ Soglia superata di ${fmt(diff)} €` : `Mancano ${fmt(Math.abs(diff))} € alla soglia`}
+              {diff>=0
+                ? `✓ Soglia superata di ${fmt(diff)} €`
+                : `Mancano ${fmt(Math.abs(diff))} € alla soglia`}
             </div>
 
             {/* Mesi grid */}
@@ -80,25 +98,24 @@ export default function GuadagniPage() {
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'.5rem',marginBottom:'1.3rem'}}>
               {MESI.map((m,i)=>{
                 const r = dati.find(d=>d.mese===i+1)
+                const isActive = selMese===i+1
                 return (
-                  <button key={i}
-                    onClick={()=>setSelMese(selMese===i+1?null:i+1)}
-                    style={{
-                      padding:'.7rem .4rem',borderRadius:'var(--r)',textAlign:'center',
-                      background: selMese===i+1 ? 'var(--red-soft)' : 'var(--bg3)',
-                      border: `1px solid ${selMese===i+1?'rgba(255,69,32,.4)':'var(--border)'}`,
-                      color: selMese===i+1 ? 'var(--acc)' : (r ? 'var(--t1)' : 'var(--t3)'),
-                      cursor:'pointer',fontFamily:'var(--fb)',fontWeight:r?600:400,fontSize:'.85rem',
-                      transition:'all .18s',
-                    }}>
+                  <button key={i} onClick={()=>setSelMese(isActive?null:i+1)} style={{
+                    padding:'.7rem .4rem', borderRadius:'var(--r)', textAlign:'center',
+                    background: isActive ? 'var(--red-soft)' : 'var(--bg3)',
+                    border: `1px solid ${isActive?'rgba(255,69,32,.4)':'var(--border)'}`,
+                    color: isActive ? 'var(--acc)' : (r ? 'var(--t1)' : 'var(--t3)'),
+                    cursor:'pointer', fontFamily:'var(--fb)', fontWeight:r?600:400,
+                    fontSize:'.85rem', transition:'all .18s',
+                  }}>
                     {m.slice(0,3)}
-                    {r && <div style={{fontSize:'.68rem',color:selMese===i+1?'var(--acc)':'var(--t2)',marginTop:'.15rem'}}>{fmt(r.fatturato)} €</div>}
+                    {r && <div style={{fontSize:'.68rem',color:isActive?'var(--acc)':'var(--t2)',marginTop:'.15rem'}}>{fmt(r.fatturato)} €</div>}
                   </button>
                 )
               })}
             </div>
 
-            {/* Dettaglio mese selezionato */}
+            {/* Dettaglio mese */}
             {meseDetail && (
               <div style={{background:'var(--bg3)',border:'1px solid var(--border)',borderRadius:'var(--rl)',padding:'1.25rem',animation:'fadeUp .3s var(--ease)'}}>
                 <div style={{fontSize:'.95rem',fontFamily:'var(--fh)',color:'var(--acc)',marginBottom:'.9rem'}}>
@@ -113,6 +130,8 @@ export default function GuadagniPage() {
             )}
           </>
         )}
+
+        {loading && <p style={{color:'var(--t2)',textAlign:'center',padding:'2rem 0'}}>Caricamento...</p>}
       </div>
     </div>
   )

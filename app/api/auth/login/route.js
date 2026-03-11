@@ -12,19 +12,25 @@ export async function POST(req) {
     }
 
     const supabase = getSupabaseAdmin()
-    const { data: rider } = await supabase
+    const { data: rider, error: dbErr } = await supabase
       .from('riders')
       .select('*')
       .eq('username', username)
       .maybeSingle()
 
-    if (!rider) {
-      return NextResponse.json({ error: 'Credenziali non valide' }, { status: 401 })
+    if (dbErr) {
+      console.error('[login] db error:', dbErr)
+      return NextResponse.json({ error: 'Errore database' }, { status: 500 })
     }
 
-    const ok = await bcrypt.compare(password, rider.password_hash)
+    if (!rider) {
+      return NextResponse.json({ error: 'Username non trovato' }, { status: 401 })
+    }
+
+    // La colonna nel DB si chiama 'password'
+    const ok = await bcrypt.compare(password, rider.password)
     if (!ok) {
-      return NextResponse.json({ error: 'Credenziali non valide' }, { status: 401 })
+      return NextResponse.json({ error: 'Password errata' }, { status: 401 })
     }
 
     const token = await createSession(rider)
@@ -33,7 +39,7 @@ export async function POST(req) {
     res.cookies.set(SESSION_COOKIE.name, token, SESSION_COOKIE)
     return res
   } catch (e) {
-    console.error('login error', e)
+    console.error('[login] errore:', e)
     return NextResponse.json({ error: 'Errore server' }, { status: 500 })
   }
 }

@@ -8,9 +8,7 @@ export default async function DashboardPage() {
     <div style={{padding:'1.5rem',maxWidth:480,margin:'0 auto'}}>
       <div className="greeting anim-up">
         <div className="greeting-name">Ciao, {session.nome} {session.cognome} 👋</div>
-        <div className="greeting-sub">
-          Piano: <span className="badge">{session.abbonamento}</span>
-        </div>
+        <div className="greeting-sub">@{session.username}</div>
       </div>
 
       <ul className="menu-list anim-up anim-d1">

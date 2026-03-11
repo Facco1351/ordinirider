@@ -34,7 +34,7 @@ export default function VisualizzaGiornate({ params }) {
   }
 
   return (
-    <div style={{position:'relative',zIndex:1}}>
+    <div className="page-wrap">
       {/* Header */}
       <div className="page-header">
         <Link href="/dashboard/giornate" className="btn-icon">←</Link>
@@ -42,7 +42,7 @@ export default function VisualizzaGiornate({ params }) {
         <Link href="/dashboard/giornate/inserisci" className="btn btn-primary btn-sm">+ Giornata</Link>
       </div>
 
-      <div className="page-content">
+      <div className="page-content page-inner-wide">
         {/* KPI */}
         <div className="kpi-grid kpi-grid-2a anim-up">
           <div className="kpi"><span className="kpi-icon">💰</span><div className="kpi-label">Fatturato</div><div className="kpi-value c-acc">{fmt(agg.totale)} €</div></div>

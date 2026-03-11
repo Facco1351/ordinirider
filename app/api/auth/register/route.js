@@ -15,7 +15,6 @@ export async function POST(req) {
 
     const supabase = getSupabaseAdmin()
 
-    // Controlla username/email duplicati
     const { data: existing } = await supabase
       .from('riders')
       .select('id')
@@ -26,17 +25,22 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Username o email già registrati' }, { status: 409 })
     }
 
-    const password_hash = await bcrypt.hash(password, 12)
+    // La colonna nel DB si chiama 'password' (non 'password_hash')
+    const hashed = await bcrypt.hash(password, 12)
 
     const { error } = await supabase.from('riders').insert({
-      username, email, nome, cognome, password_hash
+      username,
+      email,
+      nome,
+      cognome,
+      password: hashed,
     })
 
     if (error) throw error
 
     return NextResponse.json({ ok: true })
   } catch (e) {
-    console.error('register error', e)
-    return NextResponse.json({ error: 'Errore server' }, { status: 500 })
+    console.error('[register] errore:', e)
+    return NextResponse.json({ error: e.message || 'Errore server' }, { status: 500 })
   }
 }

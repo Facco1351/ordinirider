@@ -51,7 +51,7 @@ export default function ModificaGiornata({ params }) {
   const dateFmt = `${String(dt.getUTCDate()).padStart(2,'0')} ${MESI_SHORT[dt.getUTCMonth()]} ${dt.getUTCFullYear()}`
 
   return (
-    <div style={{position:'relative',zIndex:1}}>
+    <div className="page-wrap">
       {/* Top nav */}
       <div className="page-header">
         <button className="btn-icon" onClick={()=>router.back()}>←</button>
@@ -82,7 +82,7 @@ export default function ModificaGiornata({ params }) {
 
       {/* Form */}
       <form onSubmit={handleSave}>
-        <div className="page-content" style={{maxWidth:700}}>
+        <div className="page-content page-inner">
           <div className="section-label">Attività</div>
           <div className="form-grid">
             <div className="field">
